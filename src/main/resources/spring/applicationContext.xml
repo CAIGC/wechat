@@ -23,13 +23,23 @@
             <list>
                 <value>classpath:db.properties</value>
                 <value>classpath:config.properties</value>
-                <!--<value>classpath:urls.properties</value>-->
+                <value>classpath:log.properties</value>
+                <value>classpath:wechat_config.properties</value>
                 <!--<value>classpath:amq.properties</value>-->
                 <!--<value>classpath:redis.properties</value>-->
             </list>
         </property>
         <property name="fileEncoding" value="UTF-8"/>
     </bean>
-
+    <bean id="config" class="com.wechat.module.constant.WechatConfig">
+        <property name="APPID" value="${appid}" />
+        <property name="APPSECRET" value="${appsecret}" />
+        <property name="DISCARDTIMEMIN" value="${discardtimemin}" />
+        <property name="MCH_ID" value="${mch_id}" />
+        <property name="NOTIFY_URL" value="${notity_url}" />
+        <property name="PAY_SIGN_KEY" value="${pay_sign_key}" />
+        <property name="TRADE_TYPE" value="${trade_type}" />
+        <property name="WX_HOST" value="${wx_host}" />
+    </bean>
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 </beans>
