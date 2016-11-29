@@ -23,7 +23,7 @@ public class JsapiTicketUtil {
 
     private static JsapiTicket jsapiTicket;
 
-    private static JsapiTicket getJsapiTicket(){
+    public static JsapiTicket getJsapiTicket(){
         String ticketStr = RedisUtil.get(JSAPI_TICKET_KEY);
         if(StringUtils.isNotBlank(ticketStr)){
             return JSONObject.parseObject(ticketStr, JsapiTicket.class);
