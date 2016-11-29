@@ -62,7 +62,7 @@ public class WechatUtils {
             inputStreamReader.close();
             // 释放资源
             inputStream.close();
-            inputStream = null;
+//            inputStream = null;
             httpUrlConn.disconnect();
         }catch (Exception e) {
             e.printStackTrace();
