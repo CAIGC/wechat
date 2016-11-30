@@ -4,6 +4,7 @@ import com.wechat.module.utils.WechatUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,6 +21,7 @@ import java.util.SortedMap;
  * Created by CAI_GC on 2016/11/29.
  */
 @Controller
+@Scope("prototype")
 public class PayCallbackController {
 
     private static final Logger logger = LoggerFactory.getLogger("wechatPay");

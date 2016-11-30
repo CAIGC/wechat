@@ -104,6 +104,24 @@
 	      <level>INFO</level>
    		</filter>
 	</appender>
+    <appender name="wechatPay"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 文件名 -->
+        <File>${log_root}/wechatPay.log</File>
+        <!-- 配置基于时间的滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 滚动时间周期是从fileNamePattern推断出来的 -->
+            <!-- 比如格式：{yyyy-MM-dd}表示按天滚动；{yyyy-MM-dd_HH}表示按小时滚动 -->
+            <fileNamePattern>${log_root}/wechatPay.%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+            <!-- 保留历史日志数量 -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <immediateFlush>true</immediateFlush>
+        </encoder>
+    </appender>
 
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 	<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -125,7 +143,9 @@
 		<appender-ref ref="ERROR" />
 	</logger>-->
 
-
+    <logger name="wechatPay" additivity="false" level="INFO">
+        <appender-ref ref="wechatPay" />
+    </logger>
 	<root level="debug">
 		 <appender-ref ref="CONSOLE" />  
 		<appender-ref ref="ERROR" level="ERROR" />
