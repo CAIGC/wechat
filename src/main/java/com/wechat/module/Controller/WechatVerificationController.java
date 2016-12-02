@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,6 +42,24 @@ public class WechatVerificationController {
         }
         writer.flush();
         writer.close();
+    }
+
+
+    @RequestMapping(value = "/verify", method = RequestMethod.POST)
+    public void response(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // 将请求、响应的编码均设置为UTF-8（防止中文乱码）
+        request.setCharacterEncoding("UTF-8");  //微信服务器POST消息时用的是UTF-8编码，在接收时也要用同样的编码，否则中文会乱码；
+        response.setCharacterEncoding("UTF-8"); //在响应消息（回复消息给用户）时，也将编码方式设置为UTF-8，原理同上；
+        // 调用核心业务类接收消息、处理消息
+//        String respMessage = wxService.processRequest(request);
+//        // 响应消息
+//        if(respMessage != null){
+//            PrintWriter out = response.getWriter();
+//            out.print(respMessage);
+//            out.close();
+//        }
+
+
     }
 
     private Boolean checkSignature(String signature, String timestamp, String nonce) {

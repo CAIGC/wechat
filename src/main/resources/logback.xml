@@ -133,15 +133,15 @@
 	</appender>
 
 	<!-- 特定日志使用指定的appender -->
-	<!--<logger name="com.healcious.passport.commons.interceptor.LoggingInterceptor"
+	<logger name="com.wechat.commons.interceptor.LoggingInterceptor"
 		additivity="false" level="INFO">
 		<appender-ref ref="timespend" />
 	</logger>
 
-	<logger name="com.healcious.passport.commons.interceptor.GlobalExceptionHandler" level="error"
+	<logger name="com.wechat.commons.interceptor.GlobalExceptionHandler" level="error"
 		additivity="false">
 		<appender-ref ref="ERROR" />
-	</logger>-->
+	</logger>
 
     <logger name="wechatPay" additivity="false" level="INFO">
         <appender-ref ref="wechatPay" />

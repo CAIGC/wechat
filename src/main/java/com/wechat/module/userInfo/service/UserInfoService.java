@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by CAI_GC on 2016/11/29.
  */
@@ -61,5 +64,20 @@ public class UserInfoService {
             return null;
         }
         return JSONObject.parseObject(jsonObject.toString(), UserInfo.class);
+    }
+
+
+    /**
+     * 发送到用户系统
+     * @param openId
+     */
+    public void sentUserInfo(final String  openId){
+        new Thread(){
+            public void run(){
+                UserInfo userInfo = getUserInfo(openId);
+                Map<String,String> postData = new HashMap<String, String>();
+                // TODO
+            }
+        }.start();
     }
 }

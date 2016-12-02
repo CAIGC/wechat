@@ -37,7 +37,7 @@ public class PayCallbackController {
      */
     @RequestMapping(value = "payCallbackHandle", method = RequestMethod.POST)
     public void payCallbackHandle(HttpServletRequest request, HttpServletResponse response)throws IOException{
-        String result = this.getStringFromRequest(request);
+        String result = WechatUtils.getStringFromRequest(request);
         if(StringUtils.isBlank(result)){
             logger.info("微信返回结果为null");
             response.getWriter().write(this.setXML("FAIL", "签名验证失败"));
@@ -71,27 +71,7 @@ public class PayCallbackController {
     }
 
 
-    private String getStringFromRequest(HttpServletRequest request){
-        StringBuffer buffer = new StringBuffer();
-        try {
-            InputStream inputStream = request.getInputStream();
-            // 将返回的输入流转换成字符串
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String str;
-            while ((str = bufferedReader.readLine()) != null) {
-                buffer.append(str);
-            }
-            // 释放资源
-            bufferedReader.close();
-            inputStreamReader.close();
-            inputStream.close();
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-        return buffer.toString();
-    }
+
 
     private String setXML(String return_code, String return_msg) {
         return "<xml><return_code><![CDATA[" + return_code

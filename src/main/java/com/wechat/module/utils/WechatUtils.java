@@ -15,6 +15,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -240,4 +241,27 @@ public class WechatUtils {
         Pattern pattern = Pattern.compile("[0-9]*");
         return pattern.matcher(str).matches();
     }
+
+    public static String getStringFromRequest(HttpServletRequest request){
+        StringBuffer buffer = new StringBuffer();
+        try {
+            InputStream inputStream = request.getInputStream();
+            // 将返回的输入流转换成字符串
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String str;
+            while ((str = bufferedReader.readLine()) != null) {
+                buffer.append(str);
+            }
+            // 释放资源
+            bufferedReader.close();
+            inputStreamReader.close();
+            inputStream.close();
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return buffer.toString();
+    }
+
 }
