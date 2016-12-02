@@ -65,7 +65,8 @@ public class WechatController extends BaseController {
      * "access_token":"ACCESS_TOKEN",
      * "expires_in":7200,
      * "refresh_token":"REFRESH_TOKEN",
-     * "openid":"OPENID","scope":"SCOPE",
+     * "openid":"OPENID",
+     * "scope":"SCOPE",
      * "unionid": "o6_bmasdasdsad6_2sgVt7hMZOPfL"
      * }
      *
@@ -114,12 +115,12 @@ public class WechatController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/getBaseCodeUrl", method = RequestMethod.POST)
-    public void getBaseCodeUrl(String tourl,HttpServletResponse response)throws Exception{
-        response.sendRedirect(wechatService.getCodeUrl(tourl,SNSAPI_BASE));
+    @RequestMapping(value = "/getBaseCode", method = RequestMethod.POST)
+    public void getBaseCodeUrl(String redirect_url,HttpServletResponse response)throws Exception{
+        response.sendRedirect(wechatService.getCodeUrl(redirect_url,SNSAPI_BASE));
     }
 
-    @RequestMapping(value = "/getUserInfoCodeUrl", method = RequestMethod.POST)
+    @RequestMapping(value = "/getUserInfoCode", method = RequestMethod.POST)
     public void getUserInfoCodeUrl(String tourl,HttpServletResponse response)throws Exception{
         response.sendRedirect(wechatService.getCodeUrl(tourl,SNSAPI_USERINFO));
 
