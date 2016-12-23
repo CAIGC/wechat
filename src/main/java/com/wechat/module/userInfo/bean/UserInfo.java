@@ -7,15 +7,29 @@ package com.wechat.module.userInfo.bean;
 public class UserInfo {
 
     private Integer subscribe;
-    private String openid;
+    private String openId;
     private String nickname;
     private Integer sex;
     private String city;
     private String province;
     private String country;
-    private Long subscribe_time;
-    private String headimgurl;
+    private Long subscribeTime;
+    private String headImgUrl;
 
+    public UserInfo() {
+    }
+
+    public UserInfo(Integer subscribe, String openId, String nickname, Integer sex, String city, String province, String country, Long subscribeTime, String headImgUrl) {
+        this.subscribe = subscribe;
+        this.openId = openId;
+        this.nickname = nickname;
+        this.sex = sex;
+        this.city = city;
+        this.province = province;
+        this.country = country;
+        this.subscribeTime = subscribeTime;
+        this.headImgUrl = headImgUrl;
+    }
 
     public Integer getSubscribe() {
         return subscribe;
@@ -23,14 +37,6 @@ public class UserInfo {
 
     public void setSubscribe(Integer subscribe) {
         this.subscribe = subscribe;
-    }
-
-    public String getOpenid() {
-        return openid;
-    }
-
-    public void setOpenid(String openid) {
-        this.openid = openid;
     }
 
     public String getNickname() {
@@ -73,19 +79,27 @@ public class UserInfo {
         this.country = country;
     }
 
-    public Long getSubscribe_time() {
-        return subscribe_time;
+    public String getOpenId() {
+        return openId;
     }
 
-    public void setSubscribe_time(Long subscribe_time) {
-        this.subscribe_time = subscribe_time;
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 
-    public String getHeadimgurl() {
-        return headimgurl;
+    public Long getSubscribeTime() {
+        return subscribeTime;
     }
 
-    public void setHeadimgurl(String headimgurl) {
-        this.headimgurl = headimgurl;
+    public void setSubscribeTime(Long subscribeTime) {
+        this.subscribeTime = subscribeTime;
+    }
+
+    public String getHeadImgUrl() {
+        return headImgUrl;
+    }
+
+    public void setHeadImgUrl(String headImgUrl) {
+        this.headImgUrl = headImgUrl;
     }
 }

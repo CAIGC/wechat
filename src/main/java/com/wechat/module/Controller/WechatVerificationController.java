@@ -1,8 +1,10 @@
 package com.wechat.module.Controller;
 
+import com.wechat.module.wxmessage.service.WxMessageService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,9 @@ public class WechatVerificationController {
     private final Logger logger = LoggerFactory.getLogger(WechatVerificationController.class);
 
     private static final String TOKEN = "qywenji";
+
+    @Autowired
+    private WxMessageService wxMessageService;
 
     @RequestMapping(value = "/verify", method = RequestMethod.GET)
     public void verification(String signature, String timestamp, String nonce, String echostr, HttpServletResponse response) throws IOException {
@@ -51,13 +56,13 @@ public class WechatVerificationController {
         request.setCharacterEncoding("UTF-8");  //微信服务器POST消息时用的是UTF-8编码，在接收时也要用同样的编码，否则中文会乱码；
         response.setCharacterEncoding("UTF-8"); //在响应消息（回复消息给用户）时，也将编码方式设置为UTF-8，原理同上；
         // 调用核心业务类接收消息、处理消息
-//        String respMessage = wxService.processRequest(request);
-//        // 响应消息
-//        if(respMessage != null){
-//            PrintWriter out = response.getWriter();
-//            out.print(respMessage);
-//            out.close();
-//        }
+        String respMessage = wxMessageService.processRequest(request);
+        // 响应消息
+        if(respMessage != null){
+            PrintWriter out = response.getWriter();
+            out.print(respMessage);
+            out.close();
+        }
 
 
     }

@@ -1,11 +1,9 @@
 package com.wechat.module.wxmessage.service;
 
-import com.wechat.module.access_token.bean.AccessToken;
-import com.wechat.module.access_token.utils.AccessTokenUtil;
-import com.wechat.module.userInfo.bean.UserInfo;
 import com.wechat.module.userInfo.service.UserInfoService;
 import com.wechat.module.wxmessage.bean.response.Article;
 import com.wechat.module.wxmessage.bean.response.NewsMessage;
+import com.wechat.module.wxmessage.bean.response.RespTextMessage;
 import com.wechat.module.wxmessage.utils.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,60 +38,53 @@ public class WxMessageService {
             String toUserName = requestMap.get("ToUserName");
             // 消息类型
             String msgType = requestMap.get("MsgType");
-
             if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_EVENT)) {
                 // 事件类型
                 String eventType = requestMap.get("Event");
                 // 订阅
                 if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
-
-                    NewsMessage newsMessage = new NewsMessage();
+                   /* NewsMessage newsMessage = new NewsMessage();
                     newsMessage.setToUserName(fromUserName);
                     newsMessage.setFromUserName(toUserName);
                     newsMessage.setCreateTime(new Date().getTime());
                     newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
                     newsMessage.setFuncFlag(0);
-
-                    String eventKey = requestMap.get("EventKey");
-                    Integer sceneId = eventKey.equals("") ? 0 : Integer.parseInt(eventKey.substring(eventKey.indexOf('_') + 1, eventKey.length()));
-
-                    userInfoService.sentUserInfo(fromUserName);
-                    //respContent = "欢迎"+user.getNickName()+"！谢谢您的关注！";
                     setArticles(newsMessage);
                     respMessage = MessageUtil.newsMessageToXml(newsMessage);
+                    */
+                    /**关注渠道id*/
+//                    String eventKey = requestMap.get("EventKey");
+//                    Integer sceneId = eventKey.equals("") ? 0 : Integer.parseInt(eventKey.substring(eventKey.indexOf('_') + 1, eventKey.length()));
+                    userInfoService.subscribeSendMq(fromUserName);
+                    respContent = "谢谢您的关注！";
                 }
                 // 取消订阅
                 else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
                     //取消订阅后用户再收不到公众号发送的消息，因此不需要回复消息
-                    userInfoService.sentUserInfo(fromUserName);
+                    userInfoService.cancelSubscribeSendMq(fromUserName);
 
                 }
                 // 自定义菜单点击事件
                 else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {
-
                     String eventKey = requestMap.get("EventKey");
-
-//                    if (eventKey.equals("contact_customer")) {
-//                        moreCustomerService.createSession(fromUserName, moreCustomerService.getKfAccount(Config.CREATE_MENU_FLAG), moreCustomerService.responseContent());
-//                    }
 
                 }
             } else {
-                // 回复文本消息
-//                RespTextMessage textMessage = new RespTextMessage();
-//                textMessage.setToUserName(fromUserName);
-//                textMessage.setFromUserName(toUserName);
-//                textMessage.setCreateTime(new Date().getTime());
-//                textMessage.setMsgType(MessageUtil.TRANSFER_CUSTOMER_SERVICE);
-//                textMessage.setFuncFlag(0);
                 //推送给多客服系统
-//                respMessage = " <xml><ToUserName><![CDATA[" + fromUserName + "]]></ToUserName><FromUserName><![CDATA[" + toUserName + "]]></FromUserName><CreateTime>" + new Date().getTime() + "</CreateTime><MsgType><![CDATA[transfer_customer_service]]></MsgType></xml>";
+                respMessage = " <xml><ToUserName><![CDATA[" + fromUserName + "]]></ToUserName><FromUserName><![CDATA[" + toUserName + "]]></FromUserName><CreateTime>" + new Date().getTime() + "</CreateTime><MsgType><![CDATA[transfer_customer_service]]></MsgType></xml>";
             }
 
-//            if(respContent != null){
-//                textMessage.setContent(respContent);
-//                respMessage = MessageUtil.textMessageToXml(textMessage);
-//            }
+            if(respContent != null){
+                // 回复文本消息
+                RespTextMessage textMessage = new RespTextMessage();
+                textMessage.setToUserName(fromUserName);
+                textMessage.setFromUserName(toUserName);
+                textMessage.setCreateTime(new Date().getTime());
+                textMessage.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_TEXT);
+                textMessage.setFuncFlag(0);
+                textMessage.setContent(respContent);
+                respMessage = MessageUtil.textMessageToXml(textMessage);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

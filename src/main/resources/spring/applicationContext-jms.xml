@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+    <!-- ActiveMQ 连接工厂 -->
+
+    <!-- Spring Caching连接工厂 -->
+
+    <!-- 目的地：Topic主题 ：放入一个消息，所有订阅者都会收到 -->
+    <!--这个是主题目的地，一对多的 -->
+    <!--<bean id="notifyTopic" class="org.apache.activemq.command.ActiveMQTopic">-->
+        <!--<constructor-arg value="t.notify"></constructor-arg>-->
+    <!--</bean>-->
+
+
+    <!-- 配置消息发送目的地方式 -->
+    <bean id="notifyQueue" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg value="${wechat_userInfo_queue.name}"></constructor-arg>
+    </bean>
+    <!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供 -->
+    <bean id="connectinFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+         <property name="brokerURL" value="${mqUrl}" />
+    </bean>
+    <!-- Spring用于管理真正的ConnectionFactory的ConnectionFactory -->
+    <bean id="cachingConnectionFactory"
+          class="org.springframework.jms.connection.CachingConnectionFactory">
+        <!-- 目标ConnectionFactory对应真实的可以产生JMS Connection的ConnectionFactory -->
+        <property name="targetConnectionFactory" ref="connectinFactory"></property>
+        <!-- Session缓存数量 -->
+        <property name="sessionCacheSize" value="10"></property>
+    </bean>
+    <!-- Spring JMS Template 配置JMS模版 -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="cachingConnectionFactory" />
+    </bean>
+    <!-- 使用Spring JmsTemplate 的消息生产者 -->
+    	<!--<bean id="queueMessageProducer" class="com.cai.module.mq.jms.QueueMessageProducer">-->
+            <!--<property name="jmsTemplate" ref="jmsTemplate"></property>-->
+            <!--<property name="destination" ref="notifyQueue"></property>-->
+        <!--</bean>-->
+
+    <!--<bean class="org.springframework.beans.factory.config.MethodInvokingBean">
+        <property name="staticMethod">
+            <value>com.citymedia.finance.order.mq.jms.FinanceOrderQueueMessageProducer.setJmsTemplate</value>
+        </property>
+        <property name="arguments">
+            <list>
+                <ref bean="jmsTemplate"/>
+            </list>
+        </property>
+    </bean>
+    <bean class="org.springframework.beans.factory.config.MethodInvokingBean">
+        <property name="staticMethod">
+            <value>com.citymedia.finance.order.mq.jms.FinanceOrderQueueMessageProducer.setDestination</value>
+        </property>
+        <property name="arguments">
+            <list>
+                <ref bean="notifyQueue"/>
+            </list>
+        </property>
+    </bean>-->
+    <!-- 消息消费者 一般使用spring的MDP异步接收Queue模式 -->
+
+
+
+</beans>
+		

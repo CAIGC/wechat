@@ -2,9 +2,9 @@ package com.wechat.module.userInfo.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wechat.module.access_token.utils.AccessTokenUtil;
+import com.wechat.module.mq.WechatQueueMessageProducer;
 import com.wechat.module.service.WechatService;
 import com.wechat.module.userInfo.bean.UserInfo;
-import com.wechat.module.utils.WechatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,16 @@ public class UserInfoService {
         if (jsonObject == null) {
             return null;
         }
-        return JSONObject.parseObject(jsonObject.toString(), UserInfo.class);
+        Integer subscribe = jsonObject.getInteger("subscribe");
+        String nickname = jsonObject.getString("nickname");
+        Integer sex = jsonObject.getInteger("sex");
+        String city = jsonObject.getString("city");
+        String province = jsonObject.getString("province");
+        String country = jsonObject.getString("country");
+        Long subscribeTime = jsonObject.getLong("subscribe_time");
+        String headImgUrl = jsonObject.getString("headimgurl");
+        UserInfo userInfo = new UserInfo(subscribe,openId,nickname,sex,city,province,country,subscribeTime,headImgUrl);
+        return userInfo;
     }
 
     /**
@@ -63,21 +72,43 @@ public class UserInfoService {
         if (jsonObject == null) {
             return null;
         }
-        return JSONObject.parseObject(jsonObject.toString(), UserInfo.class);
+        String nickname = jsonObject.getString("nickname");
+        Integer sex = jsonObject.getInteger("sex");
+        String city = jsonObject.getString("city");
+        String province = jsonObject.getString("province");
+        String country = jsonObject.getString("country");
+        String headImgUrl = jsonObject.getString("headimgurl");
+        UserInfo userInfo = new UserInfo(0,openId,nickname,sex,city,province,country,0L,headImgUrl);
+        return userInfo;
     }
 
 
     /**
-     * 发送到用户系统
+     * 关注
      * @param openId
      */
-    public void sentUserInfo(final String  openId){
+    public void subscribeSendMq(final String  openId){
         new Thread(){
             public void run(){
                 UserInfo userInfo = getUserInfo(openId);
-                Map<String,String> postData = new HashMap<String, String>();
-                // TODO
+                if(userInfo != null){
+                    Map<String,Object> mqData = new HashMap<>();
+                    mqData.put("type","subscribe");
+                    mqData.put("data",JSONObject.toJSONString(userInfo));
+                    WechatQueueMessageProducer.send(mqData);
+                }
             }
         }.start();
+    }
+
+    /**
+     * 取消关注，发送mq
+     * @param openId
+     */
+    public void cancelSubscribeSendMq(String openId){
+        Map<String,Object> mqData = new HashMap<>();
+        mqData.put("type","cancelSubscribe");
+        mqData.put("data",openId);
+        WechatQueueMessageProducer.send(mqData);
     }
 }

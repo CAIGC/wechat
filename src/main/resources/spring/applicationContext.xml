@@ -25,7 +25,7 @@
                 <value>classpath:config.properties</value>
                 <value>classpath:log.properties</value>
                 <value>classpath:wechat_config.properties</value>
-                <!--<value>classpath:amq.properties</value>-->
+                <value>classpath:amq.properties</value>
                 <value>classpath:redis.properties</value>
             </list>
         </property>
