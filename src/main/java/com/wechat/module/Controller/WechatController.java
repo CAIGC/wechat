@@ -2,7 +2,9 @@ package com.wechat.module.Controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wechat.commons.controller.BaseController;
+import com.wechat.module.access_token.utils.AccessTokenUtil;
 import com.wechat.module.jsapi_ticket.utils.JsapiTicketUtil;
+import com.wechat.module.mq.WechatQueueMessageProducer;
 import com.wechat.module.service.WechatService;
 import com.wechat.module.userInfo.bean.UserInfo;
 import com.wechat.module.userInfo.service.UserInfoService;
@@ -125,4 +127,9 @@ public class WechatController extends BaseController {
         response.sendRedirect(wechatService.getCodeUrl(tourl,SNSAPI_USERINFO));
 
     }
+    @RequestMapping(value = "/getAccessToken")
+    public Object getAccessToken(){
+        return super.success(AccessTokenUtil.getAccessToken().getAccessToken());
+    }
+
 }

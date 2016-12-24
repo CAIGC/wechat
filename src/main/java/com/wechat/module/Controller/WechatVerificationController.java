@@ -32,7 +32,7 @@ public class WechatVerificationController {
 
     @RequestMapping(value = "/verify", method = RequestMethod.GET)
     public void verification(String signature, String timestamp, String nonce, String echostr, HttpServletResponse response) throws IOException {
-        logger.info("signature:{}", signature);
+        /*logger.info("signature:{}", signature);
         // 时间戳
         logger.info("timestamp:{}", timestamp);
         // 随机数
@@ -46,7 +46,7 @@ public class WechatVerificationController {
             writer.print("error");
         }
         writer.flush();
-        writer.close();
+        writer.close();*/
     }
 
 
@@ -56,6 +56,7 @@ public class WechatVerificationController {
         request.setCharacterEncoding("UTF-8");  //微信服务器POST消息时用的是UTF-8编码，在接收时也要用同样的编码，否则中文会乱码；
         response.setCharacterEncoding("UTF-8"); //在响应消息（回复消息给用户）时，也将编码方式设置为UTF-8，原理同上；
         // 调用核心业务类接收消息、处理消息
+        logger.info("come in");
         String respMessage = wxMessageService.processRequest(request);
         // 响应消息
         if(respMessage != null){

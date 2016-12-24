@@ -43,6 +43,7 @@ public class UserInfoService {
      */
     public UserInfo getUserInfo(String openId) {
         String url = String.format(GET_USER_INFO_BY_OPENID, AccessTokenUtil.getAccessToken().getAccessToken(), openId);
+        logger.info("url:{}",url);
         JSONObject jsonObject = wechatService.getJson(url, "获取关注用户基本信息失败");
         if (jsonObject == null) {
             return null;
